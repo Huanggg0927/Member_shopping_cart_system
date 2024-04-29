@@ -1,0 +1,7 @@
+label, input, button {
+    display: block;
+    margin: 10px;
+}
+input, textarea, button {
+    width: 200px;
+}

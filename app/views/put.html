@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Product Information</title>
+    <link rel="stylesheet" href="/static/put.css">
+</head>
+<body>
+    <h1>Update Product</h1>
+    <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
+    <form id="updateProductForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" name="brand" required>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" required>
+
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" required>
+
+        <label for="main_image_url">Main Image URL:</label>
+        <input type="url" id="main_image_url" name="main_image_url" required>
+
+        <button type="button" onclick="updateProduct()">Update Product</button>
+    </form>
+
+    <div id="message"></div>
+    <script src="/static/put.js"></script>
+</body>
+</html>
