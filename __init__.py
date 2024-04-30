@@ -7,9 +7,11 @@ from dotenv import load_dotenv
 import os
 
 from my_store.app.controllers.resources.product import Product, ProductList
-from my_store.app.controllers.resources.user import User
+from my_store.app.controllers.resources.user import User, UserList
 
 from my_store.app.models.product import ProductModel
+from my_store.app.models.user import UserModel
+load_dotenv()
 
 def create_app():
 
@@ -21,6 +23,8 @@ def create_app():
 
     api.add_resource(Product, '/product/<string:product_name>')
     api.add_resource(ProductList, '/products')
+    api.add_resource(User, '/users/<string:user_name>')
+    api.add_resource(UserList, '/users')
 
     @app.route('/')
     def index():
@@ -51,5 +55,9 @@ def create_app():
     @app.route('/get_all.html')
     def get_all_path():
         return render_template('get_all.html')
+    
+    @app.route('/script.html')
+    def script_path():
+        return render_template('script.html')
 
     return app
