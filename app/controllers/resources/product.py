@@ -1,6 +1,7 @@
 from my_store import db
 from flask_restful import Resource
 from my_store.app.models.product import ProductModel
+from flask_jwt_extended import jwt_required
 
 from flask import jsonify, request
 
@@ -88,7 +89,8 @@ class ProductList(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': str(e)}, 500
-        
+
+    @jwt_required()
     def get(self):
         data = ProductModel.query.all()
         return jsonify([product.as_dict() for product in data])

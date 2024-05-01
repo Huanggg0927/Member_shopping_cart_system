@@ -1,7 +1,7 @@
 from my_store import db
 from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from flask_jwt import jwt_required
 
 class UserModel(db.Model):
 
@@ -28,3 +28,4 @@ class UserModel(db.Model):
     
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    

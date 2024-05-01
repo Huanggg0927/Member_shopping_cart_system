@@ -1,6 +1,9 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_restful import Api
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended.exceptions import NoAuthorizationError
+from datetime import timedelta
 from my_store.extensions import db
 
 from dotenv import load_dotenv
@@ -11,15 +14,22 @@ from my_store.app.controllers.resources.user import User, UserList
 
 from my_store.app.models.product import ProductModel
 from my_store.app.models.user import UserModel
+from werkzeug.security import check_password_hash
 load_dotenv()
+
 
 def create_app():
 
     app = Flask(__name__, template_folder='app/views', static_folder='static') # 各資料夾的指向位置需要注意
     api = Api(app)
+
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_STRING')
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=int(os.getenv('JWT_EXPIRATION_DELTA', 3600)))
+
     db.init_app(app)
     migrate = Migrate(app, db)
+    jwt = JWTManager(app)
 
     api.add_resource(Product, '/product/<string:product_name>')
     api.add_resource(ProductList, '/products')
@@ -59,5 +69,40 @@ def create_app():
     @app.route('/script.html')
     def script_path():
         return render_template('script.html')
+    
+    @app.route('/login.html')
+    def login_path():
+        return render_template('login.html')
+    
+    @app.route('/welcome.html')
+    def welcome():
+        return render_template('welcome.html')
+    
+    @app.route('/login', methods=['POST'])
+    def login():
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+
+        username = request.json.get('username', None)
+        password = request.json.get('password', None)
+        if not username or not password:
+            return jsonify({"msg": "Missing username or password"}), 400
+
+        user = UserModel.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            # 创建 JWT，使用 user_id 作为身份标识
+            access_token = create_access_token(identity=user.user_id)
+            return jsonify(access_token=access_token)
+        else:
+            return jsonify({"msg": "Bad username or password"}), 401
+    
+    @jwt.user_lookup_loader
+    def user_loader_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        return UserModel.query.filter_by(user_id=identity).one_or_none()
+    
+    @app.errorhandler(NoAuthorizationError)
+    def handle_auth_error(e):
+        return jsonify({"msg": "Missing Authorization Header"}), 401
 
     return app
