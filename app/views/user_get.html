@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Query User Information</title>
+    <link rel="stylesheet" href="/static/user_get.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Query User</h1>
+    <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
+    <input type="text" id="userName" placeholder="Enter User name">
+    <button onclick="fetchUserInfo()">Query User</button>
+
+    <div id="userInfo"></div>
+    <script src="/static/user_get.js"></script>
+</body>
+</html>

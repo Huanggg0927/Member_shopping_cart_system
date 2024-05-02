@@ -1,27 +1,25 @@
 function updateProduct() {
-    const productName = document.getElementById('name').value; // Assume product's name is unique identifier for PUT URL
-    const formData = {
-        name: document.getElementById('name').value,
-        brand: document.getElementById('brand').value,
-        category: document.getElementById('category').value,
-        price: parseFloat(document.getElementById('price').value),
-        stock: parseInt(document.getElementById('stock').value),
-        main_image_url: document.getElementById('main_image_url').value
+    var productName = $('#name').val(); // 假設產品名稱是唯一標識符，用於PUT URL
+    var formData = {
+        name: $('#name').val(),
+        brand: $('#brand').val(),
+        category: $('#category').val(),
+        price: parseFloat($('#price').val()),
+        stock: parseInt($('#stock').val()),
+        main_image_url: $('#main_image_url').val()
     };
 
-    fetch(`/product/${encodeURIComponent(productName)}`, {
+    $.ajax({
+        url: `/product/${encodeURIComponent(productName)}`,
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(data) {
+            $('#message').text(data.message);
         },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('message').innerText = data.message;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('message').innerText = 'Failed to update the product';
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+            $('#message').text('Failed to update the product');
+        }
     });
 }

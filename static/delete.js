@@ -1,24 +1,21 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById('deleteForm');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();  // Prevent the default form submit
-        const productName = document.getElementById('productName').value;
+$(document).ready(function() {
+    $('#deleteForm').submit(function(event) {
+        event.preventDefault(); // 防止表单默认提交行为
+        var productName = $('#productName').val();
         deleteProduct(productName);
     });
 });
 
 function deleteProduct(productName) {
-    fetch(`/product/${productName}`, {
-        method: 'DELETE'
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        if (response.ok) {
+    $.ajax({
+        url: `/product/${encodeURIComponent(productName)}`, // 使用 encodeURIComponent 确保URL正确编码
+        method: 'DELETE',
+        success: function(data) {
+            alert(data.message);
             console.log('Product deleted successfully');
-        } else {
-            console.error('Failed to delete the product');
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Failed to delete the product:', errorThrown);
         }
-    })
-    .catch(error => console.error('Error:', error));
+    });
 }

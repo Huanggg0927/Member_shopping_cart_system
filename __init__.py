@@ -6,11 +6,15 @@ from flask_jwt_extended.exceptions import NoAuthorizationError
 from datetime import timedelta
 from my_store.extensions import db
 
+# 測試 token時效 
+from flask_jwt_extended import decode_token
+import datetime
+
 from dotenv import load_dotenv
 import os
 
 from my_store.app.controllers.resources.product import Product, ProductList
-from my_store.app.controllers.resources.user import User, UserList
+from my_store.app.controllers.resources.user import User
 
 from my_store.app.models.product import ProductModel
 from my_store.app.models.user import UserModel
@@ -25,16 +29,15 @@ def create_app():
 
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_STRING')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-    app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=int(os.getenv('JWT_EXPIRATION_DELTA', 3600)))
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=2)
 
     db.init_app(app)
     migrate = Migrate(app, db)
     jwt = JWTManager(app)
 
-    api.add_resource(Product, '/product/<string:product_name>')
+    api.add_resource(Product, '/product/<string:product_name>', '/product')
     api.add_resource(ProductList, '/products')
-    api.add_resource(User, '/users/<string:user_name>')
-    api.add_resource(UserList, '/users')
+    api.add_resource(User, '/users/<string:username>', '/users')
 
     @app.route('/')
     def index():
@@ -66,9 +69,21 @@ def create_app():
     def get_all_path():
         return render_template('get_all.html')
     
-    @app.route('/script.html')
-    def script_path():
-        return render_template('script.html')
+    @app.route('/register.html')
+    def register_path():
+        return render_template('register.html')
+    
+    @app.route('/user_put.html')
+    def user_put_path():
+        return render_template('user_put.html') 
+
+    @app.route('/user_delete.html')
+    def user_delete_path():
+        return render_template('user_delete.html') 
+    
+    @app.route('/user_get.html')
+    def user_get_path():
+        return render_template('user_get.html') 
     
     @app.route('/login.html')
     def login_path():
@@ -92,6 +107,13 @@ def create_app():
         if user and user.check_password(password):
             # 创建 JWT，使用 user_id 作为身份标识
             access_token = create_access_token(identity=user.user_id)
+
+            # 顯示 token到期時間
+            time_token = decode_token(access_token)
+            date_time_utc = datetime.datetime.fromtimestamp(time_token['exp'], datetime.timezone.utc)
+            date_time_local = date_time_utc.astimezone()
+            print("Local Date and Time:", date_time_local)
+
             return jsonify(access_token=access_token)
         else:
             return jsonify({"msg": "Bad username or password"}), 401

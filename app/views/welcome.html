@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Welcome Page</title>
 </head>
 <body>
     <h2>Welcome to the Dashboard!</h2>
+    <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
     <p>Your access token is: <span id="tokenDisplay"></span></p>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 从localStorage获取token
-            var token = localStorage.getItem('access_token');
-            // 显示token
-            document.getElementById('tokenDisplay').textContent = token;
-        });
-    </script>
+    <script src="/static/welcome.js"></script>
 </body>
 </html>

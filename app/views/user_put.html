@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User Information</title>
+    <link rel="stylesheet" href="/static/put.css">
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="bigbox">
+    <h1>Update User</h1>
+    <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
+    <form id="updateUserForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="password">密碼:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="email">電子郵件:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="name">New_Name:</label>
+        <input type="text" id="new_name" name="new_name" required>
+
+        <button type="button" onclick="updateUser()">Update User</button>
+    </form>
+    <div id="responseMessage"></div>
+    </div>
+    <script src="/static/user_put.js"></script>
+</body>
+</html>

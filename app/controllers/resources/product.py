@@ -49,9 +49,7 @@ class Product(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': str(e)}, 500
-
-class ProductList(Resource):
-
+        
     def post(self):
         data = request.get_json()
         if not data:
@@ -89,6 +87,8 @@ class ProductList(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': str(e)}, 500
+
+class ProductList(Resource):
 
     @jwt_required()
     def get(self):
