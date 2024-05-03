@@ -2,6 +2,7 @@ from my_store import db
 from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt import jwt_required
+from sqlalchemy.orm import relationship
 
 class UserModel(db.Model):
 
@@ -11,6 +12,8 @@ class UserModel(db.Model):
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     create_time = db.Column(db.DateTime, default=datetime.now)
+
+    cart_items = db.relationship('CartModel', back_populates='user')
 
     def __init__(self, username, password, email):
         self.username = username

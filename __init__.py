@@ -6,21 +6,18 @@ from flask_jwt_extended.exceptions import NoAuthorizationError
 from datetime import timedelta
 from my_store.extensions import db
 
-# 測試 token時效 
-from flask_jwt_extended import decode_token
-import datetime
-
 from dotenv import load_dotenv
 import os
 
 from my_store.app.controllers.resources.product import Product, ProductList
 from my_store.app.controllers.resources.user import User
+from my_store.app.controllers.resources.cart import Cart
 
 from my_store.app.models.product import ProductModel
 from my_store.app.models.user import UserModel
+from my_store.app.models.cart import CartModel
 from werkzeug.security import check_password_hash
 load_dotenv()
-
 
 def create_app():
 
@@ -29,7 +26,7 @@ def create_app():
 
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_STRING')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=2)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=5)
 
     db.init_app(app)
     migrate = Migrate(app, db)
@@ -38,40 +35,48 @@ def create_app():
     api.add_resource(Product, '/product/<string:product_name>', '/product')
     api.add_resource(ProductList, '/products')
     api.add_resource(User, '/users/<string:username>', '/users')
+    api.add_resource(Cart, '/cart/<string:cart_item_id>', '/cart')
 
     @app.route('/')
     def index():
-        # return 'hello.world'
         return render_template('index.html')
 
     @app.route('/redirect')
     def redirect_example():
-        # 重定向到首页
         return redirect(url_for('index'))
-
-    @app.route('/put.html')
-    def put_path():
-        return render_template('put.html')
-
-    @app.route('/get.html')
-    def get_path():
-        return render_template('get.html')
-
-    @app.route('/post.html')
-    def post_path():
-        return render_template('post.html')
-
-    @app.route('/delete.html')
-    def delete_path():
-        return render_template('delete.html')
-
-    @app.route('/get_all.html')
-    def get_all_path():
-        return render_template('get_all.html')
     
-    @app.route('/register.html')
-    def register_path():
-        return render_template('register.html')
+    # Product route
+
+    @app.route('/store.html')
+    def store_list():
+        products = ProductModel.query.all()
+        return render_template('store.html', products=products)
+
+    @app.route('/product_put.html')
+    def product_put_path():
+        return render_template('product_put.html')
+
+    @app.route('/product_get.html')
+    def product_get_path():
+        return render_template('product_get.html')
+
+    @app.route('/product_post.html')
+    def product_post_path():
+        return render_template('product_post.html')
+
+    @app.route('/product_delete.html')
+    def product_delete_path():
+        return render_template('product_delete.html')
+
+    @app.route('/product_get_all.html')
+    def product_get_all_path():
+        return render_template('product_get_all.html')
+    
+    # User route
+    
+    @app.route('/user_register.html')
+    def user_register_path():
+        return render_template('user_register.html')
     
     @app.route('/user_put.html')
     def user_put_path():
@@ -107,12 +112,6 @@ def create_app():
         if user and user.check_password(password):
             # 创建 JWT，使用 user_id 作为身份标识
             access_token = create_access_token(identity=user.user_id)
-
-            # 顯示 token到期時間
-            time_token = decode_token(access_token)
-            date_time_utc = datetime.datetime.fromtimestamp(time_token['exp'], datetime.timezone.utc)
-            date_time_local = date_time_utc.astimezone()
-            print("Local Date and Time:", date_time_local)
 
             return jsonify(access_token=access_token)
         else:

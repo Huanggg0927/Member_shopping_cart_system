@@ -3,18 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Submit Product Form</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-around;
+        }
+        .section {
+            width: 45%; /* Each section takes up roughly half the container width */
+        }
+    </style>
 </head>
 <body>
-    <!-- 鏈接到其他HTML頁面 -->
-    <a href="get.html">Go to get</a><br>
-    <a href="post.html">Go to post</a><br>
-    <a href="delete.html">Go to delete</a><br>
-    <a href="get_all.html">Go to get_all</a><br>
-    <a href="put.html">Go to put</a><br>
-    <a href="register.html">Go to register</a><br>
-    <a href="login.html">Go to login</a><br>
-    <a href="user_put.html">Go to user_put</a><br>
-    <a href="user_get.html">Go to user_get</a><br>
-    <a href="user_delete.html">Go to user_delete</a><br>
+    <div class="container">
+        <!-- Product Section -->
+        <div class="section">
+            <h1>Products</h1>
+            <a href="product_get.html">product_get</a><br>
+            <a href="product_post.html">product_post</a><br>
+            <a href="product_delete.html">product_delete</a><br>
+            <a href="product_get_all.html">product_get_all</a><br>
+            <a href="product_put.html">product_put</a><br>
+            <a href="store.html">store</a><br>
+        </div>
+
+        <!-- User Section -->
+        <div class="section">
+            <h1>Users</h1>
+            <a href="login.html">login</a><br>
+            <a href="user_register.html">user_register</a><br>
+            <a href="user_put.html">user_put</a><br>
+            <a href="user_get.html">user_get</a><br>
+            <a href="user_delete.html">user_delete</a><br>
+        </div>
+    </div>
 </body>
 </html>

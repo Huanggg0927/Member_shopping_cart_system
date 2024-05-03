@@ -1,15 +1,17 @@
 from my_store.extensions import db
+from sqlalchemy.orm import relationship
 
 class ProductModel(db.Model):
     __tablename__ = 'product'
-    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     brand = db.Column(db.String(100))
-    # 配合前端按鈕功能，點選新增標籤。 藉此統一格式
     category = db.Column(db.String(100))
     price = db.Column(db.Float)
     stock = db.Column(db.Integer)
     main_image_url = db.Column(db.String(255))
+
+    cart_items = db.relationship('CartModel', back_populates='product')
 
     def __init__(self, name, brand, category, price, stock, main_image_url):
         self.name = name
@@ -21,3 +23,6 @@ class ProductModel(db.Model):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    
+    # def sell_product(self, quantity):
+    #     self.stock -= quantity
