@@ -24,14 +24,14 @@ function fetchAllProducts() {
                                 <p>類別: ${product.category}</p>
                                 <p>價格: $${product.price}</p>
                                 <p>庫存: ${product.stock}</p>
-                                <p>主圖像: <img src="${product.main_image_url}" alt="Product Image" style="width: 100px;"></p>
+                                <p>商品照: <img src="${product.main_image_url}" alt="Product Image" style="width: 100px;"></p>
                             </div><hr>`;
             });
             $('#productsInfo').html(content);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error('Failed to fetch product information:', errorThrown);
-            $('#productsInfo').text('無法獲取產品資訊。');
+            $('#productsInfo').text('無法獲取產品資訊。請先登入取得訪問 Token');
         }
     });
 }

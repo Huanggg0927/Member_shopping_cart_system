@@ -2,6 +2,7 @@ from my_store import db
 from flask_restful import Resource
 from my_store.app.models.product import ProductModel
 from flask_jwt_extended import jwt_required
+from my_store.app.models.cart import CartModel
 
 from flask import jsonify, request
 
@@ -18,16 +19,16 @@ class Product(Resource):
             return {'message': str(e)}, 500 
         
     def delete(self, product_name):
-        try:
-            product = ProductModel.query.filter_by(name=product_name).first()
-            if product:
-                db.session.delete(product)
-                db.session.commit()
-                return {'message': 'Product successfully deleted'}, 200 
-            else:
-                return {'message': 'Product not found'}, 404 
-        except Exception as e:
-            return {'message': str(e)}, 500
+        product = ProductModel.query.filter_by(name=product_name).first()
+        product_items = CartModel.query.filter_by(product_id =product.product_id).all()
+        if product:
+            for product_item in product_items:
+                db.session.delete(product_item)
+            db.session.delete(product)
+            db.session.commit()
+            return {'message': 'Product successfully deleted'}, 200
+        else:
+            return {'message': 'Product not found'}, 404 
         
     def put(self, product_name):
         try:

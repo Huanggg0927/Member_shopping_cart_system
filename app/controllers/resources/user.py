@@ -3,7 +3,9 @@ from flask_restful import Resource, reqparse
 from my_store.app.models.user import UserModel
 from flask import jsonify, request
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
+from my_store.app.models.cart import CartModel
 
 class User(Resource):
 
@@ -29,9 +31,18 @@ class User(Resource):
         
     @jwt_required()    
     def delete(self, username):
-        user = UserModel.query.filter_by(username=username).first()
-        if user:
-            db.session.delete(user)
+        self_id = get_jwt_identity()
+        self_role = UserModel.query.filter_by(user_id=self_id).first()
+        target_user = UserModel.query.filter_by(username=username).first()
+        # 只有本人或是管理員 可以刪除帳號
+        if self_id != target_user.user_id and self_role.role != "admin":
+            return {'message': '沒有權限進行刪除 !'}
+        
+        user_cart = CartModel.query.filter_by(user_id=target_user.user_id).all()
+        if target_user:
+            for cart_item in user_cart:
+                db.session.delete(cart_item)
+            db.session.delete(target_user)
             db.session.commit()
             return {'message': 'User Successfully deleted'},200
         else :

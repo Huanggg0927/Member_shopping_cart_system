@@ -18,14 +18,15 @@ $(document).ready(function() {
                 if (data.access_token) {
                     // 登录成功，保存 token 和跳转
                     localStorage.setItem('access_token', data.access_token);
-                    window.location.href = '/welcome.html';  // 重定向到欢迎页面
+                    window.location.href = '/'
+                    alert(data.msg)
                 } else {
                     $('#message').text('Login failed: ' + data.msg);
                 }
             },
-            error: function(xhr, status, error) {
-                $('#message').text('Error: ' + error);
-                console.error('Login failed with status: ' + status + ' and error: ' + error);
+            error: function(xhr) {
+                // xhr.responseJSON 是從服務器返回的 JSON
+                alert(xhr.responseJSON.msg);
             }
         });
     });

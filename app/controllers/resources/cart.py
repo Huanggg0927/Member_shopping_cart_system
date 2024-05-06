@@ -19,17 +19,18 @@ class Cart(Resource):
         user = UserModel.query.filter_by(user_id=user_id).first()
         if user:
             cart_items = []
-            total_price = 0  # 初始化总金额为0
+            total_price = 0  # 初始化總金額為0
             for cart_item in user.cart_items:
                 item_price = cart_item.product.price * cart_item.quantity
-                total_price += item_price  # 累加每个项目的总价
+                total_price += item_price  # 累計每個項目加總
                 item_details = {
+                    'cart_id': cart_item.cart_item_id,
                     'name': cart_item.product.name,
                     'quantity': cart_item.quantity,
-                    'price': item_price  # 单个项目的总价
+                    'price': item_price  # 單個項目總價
                 }
                 cart_items.append(item_details)
-            # 返回购物车项目及总金额
+            # 返回購物車總金額
             return jsonify({
                 'items': cart_items,
                 'totalPrice': total_price
@@ -80,9 +81,11 @@ class Cart(Resource):
             return {'message': str(e)}, 500
         
     def delete(self, cart_item_id):
+        print(cart_item_id)
         cart = CartModel.query.filter_by(cart_item_id=cart_item_id).first()
         if cart:
             db.session.delete(cart)
+            db.session.commit()
             return {'message': 'cart deleted successfully'}, 200
         else:
             return {'message': 'cart not found'}, 404
@@ -111,7 +114,3 @@ class Cart(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': str(e)}, 500
-
-        
-
-       

@@ -26,16 +26,19 @@ def create_app():
 
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_STRING')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=5)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=2)
 
     db.init_app(app)
+    with app.app_context():
+        db.create_all()  # 確保數據庫表已經創建
+        UserModel.create_admin_user_if_not_exists()
     migrate = Migrate(app, db)
     jwt = JWTManager(app)
 
     api.add_resource(Product, '/product/<string:product_name>', '/product')
     api.add_resource(ProductList, '/products')
     api.add_resource(User, '/users/<string:username>', '/users')
-    api.add_resource(Cart, '/cart/<string:cart_item_id>', '/cart')
+    api.add_resource(Cart, '/cart/<int:cart_item_id>', '/cart')
 
     @app.route('/')
     def index():
@@ -45,8 +48,6 @@ def create_app():
     def redirect_example():
         return redirect(url_for('index'))
     
-    # Product route
-
     @app.route('/store.html')
     def store_list():
         products = ProductModel.query.all()
@@ -94,10 +95,6 @@ def create_app():
     def login_path():
         return render_template('login.html')
     
-    @app.route('/welcome.html')
-    def welcome():
-        return render_template('welcome.html')
-    
     @app.route('/login', methods=['POST'])
     def login():
         if not request.is_json:
@@ -110,10 +107,12 @@ def create_app():
 
         user = UserModel.query.filter_by(username=username).first()
         if user and user.check_password(password):
-            # 创建 JWT，使用 user_id 作为身份标识
+            # 創建 JWT，使用 user_id 作為身份標籤，也可以用其他唯一的特徵設定為 identity
             access_token = create_access_token(identity=user.user_id)
-
-            return jsonify(access_token=access_token)
+            return jsonify({
+                "access_token": access_token,
+                "msg": "Login successful!"
+            })
         else:
             return jsonify({"msg": "Bad username or password"}), 401
     

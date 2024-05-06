@@ -24,8 +24,9 @@ function fetchUserInfo() {
             } else {
                 // 构建显示用户信息的 HTML 结构
                 var htmlContent = `<p>Username: <strong>${data.username}</strong></p>
-                                   <p>Password: <strong>${data.password}</strong></p>  // 注意：通常不应在客户端显示密码
-                                   <p>Email: <strong>${data.email}</strong></p>`;
+                                   <p>Password: <strong>${data.password}</strong></p>
+                                   <p>Email: <strong>${data.email}</strong></p>
+                                   <p>Role: <strong>${data.role}</strong></p>`;
                 userInfo.html(htmlContent);
             }
         },
