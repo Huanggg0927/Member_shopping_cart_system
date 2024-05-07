@@ -9,7 +9,7 @@ function fetchAllProducts() {
     }
 
     $.ajax({
-        url: '/products', // 确认这是正确的端点地址
+        url: '/products',
         type: 'GET',
         contentType: 'application/json',
         headers: {

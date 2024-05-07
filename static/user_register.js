@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $('#userForm').on('submit', function(e) {
-        e.preventDefault(); // 阻止表單的默認提交行為
+        e.preventDefault(); 
 
         var userData = {
             username: $('#username').val(),
@@ -9,7 +9,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: '/users', // 根據後端設置可能需要調整URL
+            url: '/users', 
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(userData),

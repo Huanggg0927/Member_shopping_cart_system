@@ -1,5 +1,5 @@
 function updateUser() {
-    var username = $('#name').val(); // 假设产品名称是唯一标识符，用于PUT URL
+    var username = $('#name').val(); 
     var formData = {
         name: $('#name').val(),
         password: $('#password').val(),
@@ -7,15 +7,15 @@ function updateUser() {
         new_name: $('#new_name').val()
     };
 
-    // 获取存储在 localStorage 或 sessionStorage 的 token
-    var token = localStorage.getItem('access_token'); // 或 sessionStorage.getItem('jwtToken')
+    // 獲取儲存在 localStorage 的 token
+    var token = localStorage.getItem('access_token');
 
     $.ajax({
         url: `/users/${encodeURIComponent(username)}`,
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(formData),
-        beforeSend: function(xhr) {   // 包含认证 token 的头部
+        beforeSend: function(xhr) { 
             xhr.setRequestHeader("Authorization", "Bearer " + token);
         },
         success: function(data) {
@@ -23,7 +23,7 @@ function updateUser() {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
-            $('#responseMessage').text('Failed to update the user');
+            $('#responseMessage').text('使用者更新失敗');
         }
     });
 }

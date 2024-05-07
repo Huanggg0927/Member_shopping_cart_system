@@ -4,46 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品列表與購物車</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/cart.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .shopping-cart {
-            width: 50px; /* 初始寬度 */
-            position: fixed; /* 固定位置 */
-            right: 0;  /* 從左側改為右側 */
-            top: 50px;
-            transition: width 0.5s; /* 寬度變化的動畫效果 */
-        }
-    
-        .cart-icon {
-            width: 100%; /* 圖標填滿容器寬度 */
-        }
-    
-        .cart-items {
-            display: none; /* 初始不顯示商品列表 */
-            background-color: white;
-            padding: 10px;
-            box-shadow: 0 0 5px #ccc;
-        }
-    
-        /* 滑鼠懸浮時改變寬度和顯示商品列表 */
-        .shopping-cart:hover {
-            width: 200px; /* 擴展的寬度 */
-        }
-    
-        .shopping-cart:hover .cart-items {
-            display: block; /* 顯示商品列表 */
-        }
-    </style>
-    
 </head>
 <body>
     <div class="shopping-cart" id="cart">
         <img src="static/cart.jpg" alt="Cart" class="cart-icon">
         <div class="cart-items" id="cartItems">
-            <!-- 购物车内容动态生成 -->
         </div>
-        <p id="totalPrice" style="padding: 10px; background-color: white; box-shadow: 0 0 5px #ccc;">总金额: $0</p> <!-- 新增显示总金额的元素 -->
+        <p id="totalPrice" style="padding: 10px; background-color: white; box-shadow: 0 0 5px #ccc;">總金額: $0</p> 
     </div>
 
     <h1>商品列表</h1>
@@ -58,7 +27,7 @@
             <p>價格：${{ product.price }}</p>
             <p>庫存：{{ product.stock }}</p>
             <form action="/add_to_cart" method="post" class="add-to-cart-form" data-product-name="{{ product.name }}">
-                <input type="number" name="quantity" value="1" min="1" class="quantity-input">
+                <input type="number" name="quantity" value="1" min="1" max="99" class="quantity-input">
                 <button type="submit">加入購物車</button>
             </form>            
         </div>

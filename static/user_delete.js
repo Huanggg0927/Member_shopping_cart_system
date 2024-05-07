@@ -1,12 +1,12 @@
 $(document).ready(function() {
     $('#deleteForm').submit(function(event) {
-        event.preventDefault(); // 防止表单默认提交行为
+        event.preventDefault();
         var userName = $('#userName').val();
-        deleteUser(userName);  // 改名为 deleteUser
+        deleteUser(userName); 
     });
 });
 
-function deleteUser(userName) {  // 这里也改为 deleteUser
+function deleteUser(userName) { 
     var token = localStorage.getItem('access_token'); 
     $.ajax({
         url: `/users/${encodeURIComponent(userName)}`,
@@ -16,10 +16,10 @@ function deleteUser(userName) {  // 这里也改为 deleteUser
         },
         success: function(data) {
             alert(data.message);
-            console.log('User deleted successfully');
+            console.log('刪除使用者 成功!');
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Failed to delete the user:', errorThrown);
+            console.error('刪除使用者失敗 :', errorThrown);
         }
     });
 }

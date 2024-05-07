@@ -1,0 +1,26 @@
+.shopping-cart {
+    width: 50px; 
+    position: fixed; 
+    right: 0; 
+    top: 50px;
+    transition: width 0.5s; 
+}
+
+.cart-icon {
+    width: 100%;
+}
+
+.cart-items {
+    display: none;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 0 5px #ccc;
+}
+
+.shopping-cart:hover {
+    width: 200px; 
+}
+
+.shopping-cart:hover .cart-items {
+    display: block; 
+}

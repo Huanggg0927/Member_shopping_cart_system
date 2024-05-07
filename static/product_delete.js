@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $('#deleteForm').submit(function(event) {
-        event.preventDefault(); // 防止表单默认提交行为
+        event.preventDefault();
         var productName = $('#productName').val();
         deleteProduct(productName);
     });
@@ -8,14 +8,14 @@ $(document).ready(function() {
 
 function deleteProduct(productName) {
     $.ajax({
-        url: `/product/${encodeURIComponent(productName)}`, // 使用 encodeURIComponent 确保URL正确编码
+        url: `/product/${encodeURIComponent(productName)}`,
         method: 'DELETE',
         success: function(data) {
             alert(data.message);
-            console.log('Product deleted successfully');
+            console.log('商品刪除 成功 !');
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Failed to delete the product:', errorThrown);
+            console.error('商品刪除 失敗 :', errorThrown);
         }
     });
 }

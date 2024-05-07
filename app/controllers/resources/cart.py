@@ -37,14 +37,16 @@ class Cart(Resource):
             })
         else:
             return {'message': 'User not found or not authenticated'}, 404
-            
+
+    @jwt_required()   
     def post(self):
         product_name = request.form.get('product_name')
-        access_token = request.form.get('access_token')
+        # access_token = request.form.get('access_token')
         quantity = request.form.get('quantity')
 
-        decoded = decode_token(access_token)
-        user_id = decoded.get('sub')
+        # decoded = decode_token(access_token)
+        # user_id = decoded.get('sub')
+        user_id = get_jwt_identity()
 
         product = ProductModel.query.filter_by(name=product_name).first()
         if product is None:
@@ -81,7 +83,6 @@ class Cart(Resource):
             return {'message': str(e)}, 500
         
     def delete(self, cart_item_id):
-        print(cart_item_id)
         cart = CartModel.query.filter_by(cart_item_id=cart_item_id).first()
         if cart:
             db.session.delete(cart)
@@ -114,3 +115,25 @@ class Cart(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': str(e)}, 500
+        
+class CartList(Resource):
+    
+    def get(self):
+        carts = CartModel.query.all()
+        if not carts:
+            return {'message': 'No carts found!'}, 404
+
+        user_orders = {}
+        for cart in carts:
+            username = cart.user.username
+            if username not in user_orders:
+                user_orders[username] = []  # 如果該用戶還沒有添加到字典，創建一個空列表
+            
+            # 為該用戶添加當前購物車中的商品信息
+            user_orders[username].append({
+                'product': cart.product.name,
+                'quantity': cart.quantity,
+                'price': cart.product.price
+            })
+        
+        return jsonify(user_orders)

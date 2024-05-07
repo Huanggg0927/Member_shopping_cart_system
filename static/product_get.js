@@ -17,7 +17,7 @@ function fetchProductInfo() {
             productInfo.html(htmlContent);
         }
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        $('#productInfo').text('Failed to fetch product information');
+        $('#productInfo').text('取的商品資訊 失敗 !');
         console.error('Error:', errorThrown);
     });
 }

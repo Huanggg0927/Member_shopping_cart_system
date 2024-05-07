@@ -1,5 +1,5 @@
 function updateProduct() {
-    var productName = $('#name').val(); // 假設產品名稱是唯一標識符，用於PUT URL
+    var productName = $('#name').val();
     var formData = {
         name: $('#name').val(),
         brand: $('#brand').val(),
@@ -19,7 +19,7 @@ function updateProduct() {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
-            $('#message').text('Failed to update the product');
+            $('#message').text('更新產品 失敗!');
         }
     });
 }

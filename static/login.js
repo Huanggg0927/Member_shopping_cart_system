@@ -1,12 +1,12 @@
 $(document).ready(function() {
     $('#loginForm').submit(function(event) {
-        event.preventDefault();  // 防止表单默认提交
+        event.preventDefault(); 
 
         var username = $('#username').val();
         var password = $('#password').val();
 
         $.ajax({
-            url: '/login',  // 对应后端的登录路由
+            url: '/login',  
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -16,16 +16,15 @@ $(document).ready(function() {
             success: function(data) {
                 console.log(data);
                 if (data.access_token) {
-                    // 登录成功，保存 token 和跳转
+                    // 保存 token 和 回首頁
                     localStorage.setItem('access_token', data.access_token);
                     window.location.href = '/'
                     alert(data.msg)
                 } else {
-                    $('#message').text('Login failed: ' + data.msg);
+                    $('#message').text('登入失敗 : ' + data.msg);
                 }
             },
             error: function(xhr) {
-                // xhr.responseJSON 是從服務器返回的 JSON
                 alert(xhr.responseJSON.msg);
             }
         });

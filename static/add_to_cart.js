@@ -1,27 +1,30 @@
 $(document).ready(function() {
-    $('.add-to-cart-form').on('submit', function(e) {
-        e.preventDefault(); // 阻止表單的標準提交
-        // var productId = $(this).find('input[name="product_id"]').val(); // 獲取產品ID
+    $('body').on('submit', '.add-to-cart-form', function(event) {
+        event.preventDefault(); 
+
+        var productName = $(this).data('product-name');
+        var quantity = $(this).find('.quantity-input').val();
         var access_token = localStorage.getItem('access_token');
-        var product_name = $(this).data('product-name');
-        var quantity  = $('.quantity-input').val();
 
         $.ajax({
-            url: '/cart', // POST 請求的 URL
-            type: 'POST', // 設定請求類型
-            data: { // 將數據打包成一個對象
-                product_name: product_name,
+            url: '/cart',
+            type: 'POST',
+            data: {
+                product_name: productName,
                 access_token: access_token,
-                quantity : quantity
+                quantity: quantity
+            },
+            headers: {
+                'Authorization': 'Bearer ' + access_token
             },
             success: function(response) {
-                // 這裡可以添加一些代碼，處理成功的回應
-                alert('商品已加入購物車');
+                alert('已將 ' + quantity + ' 件 ' + productName + ' 添加到購物車');
             },
             error: function() {
-                // 處理錯誤的回應
-                alert('添加到購物車失敗');
+                alert('添加到購物車失敗，請重試!');
             }
         });
+
+        $(this).find('.quantity-input').val(1);
     });
 });

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_restful import Api
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 from flask_jwt_extended.exceptions import NoAuthorizationError
 from datetime import timedelta
 from my_store.extensions import db
@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 import os
 
 from my_store.app.controllers.resources.product import Product, ProductList
+from my_store.app.controllers.resources.cart import Cart, CartList
 from my_store.app.controllers.resources.user import User
-from my_store.app.controllers.resources.cart import Cart
 
 from my_store.app.models.product import ProductModel
 from my_store.app.models.user import UserModel
@@ -26,7 +26,7 @@ def create_app():
 
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_STRING')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=2)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=60)
 
     db.init_app(app)
     with app.app_context():
@@ -39,6 +39,7 @@ def create_app():
     api.add_resource(ProductList, '/products')
     api.add_resource(User, '/users/<string:username>', '/users')
     api.add_resource(Cart, '/cart/<int:cart_item_id>', '/cart')
+    api.add_resource(CartList, '/carts')
 
     @app.route('/')
     def index():
@@ -52,6 +53,10 @@ def create_app():
     def store_list():
         products = ProductModel.query.all()
         return render_template('store.html', products=products)
+    
+    @app.route('/store_check_order.html')
+    def store_check_order_path():
+        return render_template('store_check_order.html')
 
     @app.route('/product_put.html')
     def product_put_path():
@@ -72,9 +77,7 @@ def create_app():
     @app.route('/product_get_all.html')
     def product_get_all_path():
         return render_template('product_get_all.html')
-    
-    # User route
-    
+        
     @app.route('/user_register.html')
     def user_register_path():
         return render_template('user_register.html')
@@ -116,6 +119,8 @@ def create_app():
         else:
             return jsonify({"msg": "Bad username or password"}), 401
     
+    # @app.route('/dashboard')
+
     @jwt.user_lookup_loader
     def user_loader_callback(_jwt_header, jwt_data):
         identity = jwt_data["sub"]
