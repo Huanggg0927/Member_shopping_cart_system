@@ -16,7 +16,17 @@
     </div>
 
     <h1>商品列表</h1>
-    <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
+    {% if not logged_in %}
+    <form action="login.html" method="GET">
+        <button type="submit">登入/註冊</button>
+    </form><br>
+    {% else %}
+    <button id="signoutButton">登出</button><br>
+    <a href="user_put.html">user_put</a><br>
+    <a href="user_get.html">user_get</a><br>
+    <a href="user_delete.html">user_delete</a><br><br>
+    {% endif %}
+    
     <div>
         {% for product in products %}
         <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
@@ -35,5 +45,6 @@
     </div>
     <script src="/static/add_to_cart.js"></script>
     <script src="/static/cart_get.js"></script>
+    <script src="/static/signout.js"></script>
 </body>
 </html>

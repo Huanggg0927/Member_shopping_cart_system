@@ -53,7 +53,7 @@ $(document).ready(function() {
                     $('#totalPrice').text('總金額: $' + response.totalPrice);
                 },
                 error: function() {
-                    alert('無法載入購物車內容，請先登入');
+                    alert('登入後，啟用購物車功能');
                 }
             });
         } else {

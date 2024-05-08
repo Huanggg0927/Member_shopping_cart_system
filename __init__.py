@@ -1,7 +1,7 @@
-from flask import Flask, render_template, redirect, url_for, request, jsonify
+from flask import Flask, render_template, redirect, url_for, request, jsonify, session
 from flask_restful import Api
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_jwt_extended.exceptions import NoAuthorizationError
 from datetime import timedelta
 from my_store.extensions import db
@@ -23,10 +23,11 @@ def create_app():
 
     app = Flask(__name__, template_folder='app/views', static_folder='static') # 各資料夾的指向位置需要注意
     api = Api(app)
+    app.secret_key = os.getenv('SESSION_SECRET_KEY')
 
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_STRING')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=60)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=2)
 
     db.init_app(app)
     with app.app_context():
@@ -43,16 +44,15 @@ def create_app():
 
     @app.route('/')
     def index():
-        return render_template('index.html')
-
-    @app.route('/redirect')
-    def redirect_example():
-        return redirect(url_for('index'))
-    
-    @app.route('/store.html')
-    def store_list():
+        logged_in = session.get('logged_in', False)
         products = ProductModel.query.all()
-        return render_template('store.html', products=products)
+        if 'user_role' in session:
+            if session['user_role'] == 'admin':
+                return render_template('admin.html')
+            elif session['user_role'] == 'member':
+                return render_template('store.html', products=products, logged_in=logged_in)
+        # return render_template('index.html')
+        return render_template('store.html', products=products, logged_in=logged_in)
     
     @app.route('/store_check_order.html')
     def store_check_order_path():
@@ -112,14 +112,20 @@ def create_app():
         if user and user.check_password(password):
             # 創建 JWT，使用 user_id 作為身份標籤，也可以用其他唯一的特徵設定為 identity
             access_token = create_access_token(identity=user.user_id)
+            session['user_role'] = user.role
+            session['logged_in'] = True
             return jsonify({
                 "access_token": access_token,
                 "msg": "Login successful!"
             })
         else:
             return jsonify({"msg": "Bad username or password"}), 401
-    
-    # @app.route('/dashboard')
+        
+    @app.route('/signout')
+    def sign_out():
+        session.pop('logged_in', None)
+        session.clear()
+        return render_template('index.html')
 
     @jwt.user_lookup_loader
     def user_loader_callback(_jwt_header, jwt_data):
