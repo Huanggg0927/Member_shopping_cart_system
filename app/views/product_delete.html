@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Product</title>
+    <link rel="stylesheet" href="/static/body.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Delete Product</h1>
+    <h1>刪除商品</h1>
     <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
     <form id="deleteForm">
-        <label for="productName">Enter Product Name:</label>
+        <label for="productName">刪除商品的名稱:</label>
         <input type="text" id="productName" name="productName" required>
-        <button type="submit">Delete Product</button>
+        <button type="submit">刪除</button>
     </form>
     <script src="/static/product_delete.js"></script>
 </body>

@@ -5,32 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品列表與購物車</title>
     <link rel="stylesheet" href="/static/cart.css">
+    <link rel="stylesheet" href="/static/button.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="shopping-cart" id="cart">
-        <img src="static/cart.jpg" alt="Cart" class="cart-icon">
+        <img src="static/cart1.jpg" alt="Cart" class="cart-icon">
         <div class="cart-items" id="cartItems">
         </div>
         <p id="totalPrice" style="padding: 10px; background-color: white; box-shadow: 0 0 5px #ccc;">總金額: $0</p> 
     </div>
 
-    <h1>商品列表</h1>
-    {% if not logged_in %}
-    <form action="login.html" method="GET">
-        <button type="submit">登入/註冊</button>
-    </form><br>
-    {% else %}
-    <button id="signoutButton">登出</button><br>
-    <a href="user_put.html">user_put</a><br>
+    <div class="body-container">
+        <h1>商品列表</h1>
+        {% if not logged_in %}
+        <form action="login.html" method="GET">
+            <button type="submit" class="nav-button">登入/註冊</button>
+        </form><br>
+        {% else %}
+        <div class="nav-buttons-container">
+            <button id="signoutButton" class="nav-button">登出</button>
+            <a href="user_put.html" class="nav-button">個人資料更新</a><br>
+            <a href="user_get.html" class="nav-button">使用者資訊</a><br>
+            <a href="user_delete.html" class="nav-button">刪除使用者</a><br>
+        </div><br>
+        {% endif %}
+    </div>
+
+    <!-- <a href="user_put.html">user_put</a><br>
     <a href="user_get.html">user_get</a><br>
-    <a href="user_delete.html">user_delete</a><br><br>
-    {% endif %}
+    <a href="user_delete.html">user_delete</a><br><br> -->
     
-    <div>
         {% for product in products %}
-        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-            <img src="{{ product.main_image_url }}" alt="{{ product.name }}" style="width: 100px; height: auto;">
+        <div class="individual-rounded-div">
+            <div style="display: flex;">
+                <img src="{{ product.main_image_url }}" alt="{{ product.name }}" style="width: auto; height: 200px; margin: 40px;">
+            <div>
             <h2>{{ product.name }}</h2>
             <p>品牌：{{ product.brand }}</p>
             <p>類別：{{ product.category }}</p>
@@ -39,10 +49,12 @@
             <form action="/add_to_cart" method="post" class="add-to-cart-form" data-product-name="{{ product.name }}">
                 <input type="number" name="quantity" value="1" min="1" max="99" class="quantity-input">
                 <button type="submit">加入購物車</button>
-            </form>            
+            </form>
+            </div>
+            </div>
         </div>
         {% endfor %}
-    </div>
+    
     <script src="/static/add_to_cart.js"></script>
     <script src="/static/cart_get.js"></script>
     <script src="/static/signout.js"></script>

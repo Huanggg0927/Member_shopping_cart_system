@@ -43,7 +43,7 @@ $(document).ready(function() {
                         content += '<div class="cart-item" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">' +
                                     '<div style="flex-grow: 1;">' +
                                         '<p>' + item.name + ' x ' + item.quantity + '</p>' +
-                                        '<p>價格: $' + (item.price * item.quantity) + '</p>' +
+                                        '<p>價格: $' + item.price + '</p>' +
                                     '</div>' +
                                     '<button class="remove-item" data-item-id="' + item.cart_id + '" style="flex-shrink: 0;">✖</button>' +
                                    '</div>';

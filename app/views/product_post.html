@@ -2,32 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/static/body.css">
     <title>Create New Product</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
 </head>
 <body>
-    <h1>Create New Product</h1>
+    <h1>發佈新商品</h1>
     <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
     <form id="productForm">
-        <label for="name">Name:</label>
+        <label for="name">名稱:</label>
         <input type="text" id="name" name="name" required><br><br>
         
-        <label for="brand">Brand:</label>
+        <label for="brand">品牌:</label>
         <input type="text" id="brand" name="brand" required><br><br>
         
-        <label for="category">Category:</label>
+        <label for="category">類別:</label>
         <input type="text" id="category" name="category" required><br><br>
         
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" step="0.01" required><br><br>
+        <label for="price">價格:</label>
+        <input type="number" id="price" name="price" required><br><br>
         
-        <label for="stock">Stock:</label>
+        <label for="stock">庫存:</label>
         <input type="number" id="stock" name="stock" required><br><br>
         
-        <label for="main_image_url">Main Image URL:</label>
+        <label for="main_image_url">圖片:</label>
         <input type="url" id="main_image_url" name="main_image_url" required><br><br>
         
-        <button type="submit">Create Product</button>
+        <button type="submit">送出</button>
     </form>
     <script src="/static/product_post.js"></script>
 </body>

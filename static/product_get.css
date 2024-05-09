@@ -1,3 +1,27 @@
+img {
+    max-width: 50%;
+    height: auto;
+}
+
 #productInfo {
-    margin-top: 20px;
+    text-align: center; /* 確保內容居中 */
+    width: 100%; /* 指定寬度，依需求調整 */
+    max-width: 600px; /* 最大寬度，依需求調整 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+#container > div { /* 新增样式规则用于输入框和按钮的容器 */
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    gap: 10px; /* 输入框和按钮之间的间隔 */
+    margin-bottom: 20px; /* 下间距 */
 }

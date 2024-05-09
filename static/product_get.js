@@ -8,12 +8,12 @@ function fetchProductInfo() {
         if (data.message) {
             productInfo.text(data.message);
         } else {
-            var htmlContent = `<p>Name: ${data.name}</p>
-                               <p>Brand: ${data.brand}</p>
-                               <p>Category: ${data.category}</p>
-                               <p>Price: ${data.price}</p>
-                               <p>Stock: ${data.stock}</p>
-                               <p>Main Image: <img src="${data.main_image_url}" alt="Product Image" /></p>`;
+            var htmlContent = `<p>名稱: ${data.name}</p>
+                               <p>品牌: ${data.brand}</p>
+                               <p>類別: ${data.category}</p>
+                               <p>價格: ${data.price}</p>
+                               <p>庫存: ${data.stock}</p>
+                               <p><img src="${data.main_image_url}" alt="Product Image" /></p>`;
             productInfo.html(htmlContent);
         }
     }).fail(function(jqXHR, textStatus, errorThrown) {

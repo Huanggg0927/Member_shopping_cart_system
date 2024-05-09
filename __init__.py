@@ -27,7 +27,7 @@ def create_app():
 
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_STRING')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=2)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
 
     db.init_app(app)
     with app.app_context():
@@ -54,6 +54,10 @@ def create_app():
         # return render_template('index.html')
         return render_template('store.html', products=products, logged_in=logged_in)
     
+    @app.route('/redirect')
+    def back_home():  # 修改函数名以避免与 `redirect` 冲突
+        return redirect(url_for('index'))
+
     @app.route('/store_check_order.html')
     def store_check_order_path():
         return render_template('store_check_order.html')
@@ -125,7 +129,7 @@ def create_app():
     def sign_out():
         session.pop('logged_in', None)
         session.clear()
-        return render_template('index.html')
+        return redirect(url_for('index')) 
 
     @jwt.user_lookup_loader
     def user_loader_callback(_jwt_header, jwt_data):
