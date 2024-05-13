@@ -16,7 +16,7 @@ from my_store.app.controllers.resources.user import User
 from my_store.app.models.product import ProductModel
 from my_store.app.models.user import UserModel
 from my_store.app.models.cart import CartModel
-from werkzeug.security import check_password_hash
+# from werkzeug.security import check_password_hash
 load_dotenv()
 
 def create_app():
