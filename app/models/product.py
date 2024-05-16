@@ -1,4 +1,4 @@
-from my_store.extensions import db
+from my_store import db
 from sqlalchemy.orm import relationship
 
 class ProductModel(db.Model):

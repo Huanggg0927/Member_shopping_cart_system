@@ -7,3 +7,13 @@ img {
     height: 200px; 
     margin: 40px;
   }
+
+body{
+    display: flex;
+    justify-content: center;
+    background-color: #D2E9FF;
+}
+.test{
+    display: flex;
+    justify-content: center;
+}

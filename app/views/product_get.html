@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <title>Query Product Information</title>
     <link rel="stylesheet" href="/static/product_get.css">
-    <link rel="stylesheet" href="/static/body.css">
+    <link rel="stylesheet" href="/static/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <div id="container">
         <h1>商品查詢</h1>
-        <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
+        <a href="/redirect" class="no-underline">Return to Home</a><br><br>
         <div style="display: flex; justify-content: center; width: 100%;">
             <input type="text" id="productName" placeholder="Enter product name">
             <button onclick="fetchProductInfo()">開始搜尋</button>

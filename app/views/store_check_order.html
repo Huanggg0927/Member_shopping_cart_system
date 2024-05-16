@@ -2,20 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>User Shopping Carts</title>
-    <style>
-        body{
-            display: flex;
-            justify-content: center;
-        }
-    </style>
 </head>
 <body>
     <div>
         <h1>所有購物車中的訂單</h1>
-        <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
+        <a href="/redirect" class="no-underline">Return to Home</a><br><br>
         <div id="orders"></div>
     </div>
     <script src="/static/store_check_order.js"></script>

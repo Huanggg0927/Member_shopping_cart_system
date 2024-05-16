@@ -14,7 +14,6 @@
     display: none;
     background-color: white;
     padding: 10px;
-    box-shadow: 0 0 5px #ccc;
 }
 
 .shopping-cart:hover {
@@ -32,31 +31,4 @@ div.product {
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     border-radius: 5px;
-}
-
-/* 全局背景颜色 */
-body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    background-color: #e0e0e0; /* 整体背景颜色调整为淡灰色 */
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-.individual-rounded-div {
-    border: 1px solid #ccc; /* 边框颜色和宽度 */
-    padding: 10px;
-    margin-bottom: 10px;
-    margin-left: 50px;
-    margin-right: 50px;
-    background-color: white;
-    border-radius: 15px; /* 四个角都是圆角 */
-    display: flex;
-    justify-content: center;
 }

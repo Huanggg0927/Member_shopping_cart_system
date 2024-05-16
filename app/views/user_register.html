@@ -2,25 +2,26 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>註冊新用戶</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <link rel="stylesheet" href="/static/style.css">
+    <title>註冊新用戶</title>
 </head>
 <body>
     <h1>註冊新用戶</h1>
-    <a href="/redirect" style="margin-bottom: 20px;">Return to Home</a><br><br>
+    <a href="/redirect" class="no-underline">Return to Home</a>
     <form id="userForm">
         <div>
             <label for="username">用戶名稱:</label>
             <input type="text" id="username" name="username" required>
-        </div>
+        </div><br>
         <div>
             <label for="password">密碼:</label>
             <input type="password" id="password" name="password" required>
-        </div>
+        </div><br>
         <div>
             <label for="email">電子郵件:</label>
             <input type="email" id="email" name="email" required>
-        </div>
+        </div><br>
         <button type="submit">註冊</button>
     </form>
 
